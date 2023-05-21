@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UML", "UML\UML.vcxproj", "{ABE81510-CD4C-4B75-9203-F0B0A9DEEFED}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConstractACar", "ConstractACar\ConstractACar.vcxproj", "{35ED9A0F-EBDC-44B1-A664-B4686910827A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{ABE81510-CD4C-4B75-9203-F0B0A9DEEFED}.Release|x64.Build.0 = Release|x64
 		{ABE81510-CD4C-4B75-9203-F0B0A9DEEFED}.Release|x86.ActiveCfg = Release|Win32
 		{ABE81510-CD4C-4B75-9203-F0B0A9DEEFED}.Release|x86.Build.0 = Release|Win32
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Debug|x64.ActiveCfg = Debug|x64
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Debug|x64.Build.0 = Debug|x64
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Debug|x86.ActiveCfg = Debug|Win32
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Debug|x86.Build.0 = Debug|Win32
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Release|x64.ActiveCfg = Release|x64
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Release|x64.Build.0 = Release|x64
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Release|x86.ActiveCfg = Release|Win32
+		{35ED9A0F-EBDC-44B1-A664-B4686910827A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

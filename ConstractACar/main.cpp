@@ -102,8 +102,40 @@ public://инкапсуляция
 		cout << "Engine is " << (started() ? "started" : "stopped") << ".\n";
 	}
 };
+#define MAX_SPEED_LOW_LIMIT 50
+#define MAX_SPEED_HIGH_LIMIT 400
+class Car
+{
+	Engine engine;
+	Tank tank;
+	int speed;
+	const int MAX_SPEED;
+public:
+	Car(int engine_consumption, int tank_volume, int max_speed) :
+		engine(engine_consumption),//агрегат
+		tank(tank_volume),//агрегат вызывает конструкторы агрегаторов и соответственно 
+		//создаются объекты
+		MAX_SPEED(
+		max_speed<MAX_SPEED_LOW_LIMIT ? MAX_SPEED_LOW_LIMIT :
+		max_speed>MAX_SPEED_HIGH_LIMIT ? MAX_SPEED_HIGH_LIMIT :
+		max_speed)
+	{
+		cout << "Your car is ready, press Enter to get in" << endl;
+	}
+	~Car()
+	{
+		cout << "Your car is over" << endl;
+	}
+	void info()const
+	{
+		engine.info();
+		tank.info();
+		cout << "MAX speed:\t" << MAX_SPEED << "km/h.\n";
+	}
+};
 
 //#define TANK_CHECK
+//#define ENGINE_CHECK
 void main()
 {
 	setlocale(0, "");
@@ -119,6 +151,10 @@ void main()
 		tank.info();
 	} while (fuel);
 #endif // TANK_CHECK
+#ifdef ENGINE_CHECK
 	Engine engine(8);
 	engine.info();
+#endif // ENGINE_CHECK
+	Car mustang(10, 80, 250);
+	mustang.info();
 }
