@@ -1,4 +1,6 @@
 ﻿#include<iostream>
+#include<conio.h> //библиотека для функции _getch
+#include<thread>//заголовок с потоками
 using namespace std;
 #define MIN_TANK_VOLUME 20
 #define MAX_TANK_VOLUME 100
@@ -27,7 +29,7 @@ public:
 	}
 	//-----Constractor
 	Tank(int volume) :VOLUME(
-		volume < MIN_TANK_VOLUME ? MIN_TANK_VOLUME ://после: выберается в противном случае
+		volume < MIN_TANK_VOLUME ? MIN_TANK_VOLUME ://после: выбирается в противном случае
 		volume > MAX_TANK_VOLUME ? MAX_TANK_VOLUME :
 		volume	    //текущее значение
 	), fuel_level(0)//с конвеера бак сошёл пустой
@@ -104,11 +106,20 @@ public://инкапсуляция
 };
 #define MAX_SPEED_LOW_LIMIT 50
 #define MAX_SPEED_HIGH_LIMIT 400
+
+#define Enter 13
+#define Escape 27
+
 class Car
 {
 	Engine engine;
 	Tank tank;
+	bool driver_inside;
 	int speed;
+	struct//анонимная структура для панели
+	{
+		std::thread panel_thread;
+	}threads;//дали имя единственному объекту этой структуры
 	const int MAX_SPEED;
 public:
 	Car(int engine_consumption, int tank_volume, int max_speed) :
@@ -120,17 +131,76 @@ public:
 		max_speed>MAX_SPEED_HIGH_LIMIT ? MAX_SPEED_HIGH_LIMIT :
 		max_speed)
 	{
+		speed = 0;
+		driver_inside = false;
 		cout << "Your car is ready, press Enter to get in" << endl;
 	}
 	~Car()
 	{
 		cout << "Your car is over" << endl;
 	}
+
+	void get_in()//надо как то залазить и вылазить из машины
+	{
+		driver_inside = true;
+		//panel(); //перегружаем панель приборов
+		threads.panel_thread = std::thread(&Car::panel,this);//порождаем поток в котором будет выполнятся pfnel()
+	//мы panel_thread прописали в defolt constractor в безымянной структуре поэтому 
+	}
+	void get_out()
+	{
+		driver_inside = false;
+		if (threads.panel_thread.joinable())threads.panel_thread.join();
+		cout << "You are out of your car" << endl;
+	}
+	//основной метод который управляет машиной
+	void control()
+	{
+		char key; //команда с клавиатуры
+		do 
+		{
+			key = _getch();//функция ожидает нажатия клавиши и возвращает ASCII код нажатой клавиши
+			switch (key)
+			{
+			case Enter:
+				if (driver_inside)get_out();
+				else get_in();
+				break;
+
+			case 'F':case'f':
+				if (driver_inside)
+				{
+					cout << "Для начала выйдите из машины" << endl;
+				}
+				double fuel;
+				cout << "Введите объём топлива: "; cin >> fuel;
+				tank.fill(fuel);
+				break;
+			case 'I':case'i'://Ignition
+
+				break;
+
+			case Escape:
+				get_out();
+			}
+		} while (key != Escape);
+	}
+	void panel()
+	{
+		while (driver_inside)
+
+		{
+			system("CLS"); //чтобы обновлялось
+			cout << "Speed:\t\t" << speed << "km/h.\n";
+			cout << "Fuel level:\t" << tank.get_fuel_level() << " liters.\n";
+			std::this_thread::sleep_for(1s);
+		}
+	}
 	void info()const
 	{
 		engine.info();
 		tank.info();
-		cout << "MAX speed:\t" << MAX_SPEED << "km/h.\n";
+		cout << "Max speed:\t" << MAX_SPEED << "km/h.\n";
 	}
 };
 
@@ -156,5 +226,6 @@ void main()
 	engine.info();
 #endif // ENGINE_CHECK
 	Car mustang(10, 80, 250);
-	mustang.info();
+	mustang.control();
+
 }
